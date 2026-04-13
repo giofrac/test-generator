@@ -1,0 +1,32 @@
+[metadata]
+name = Test Generator
+version = 1.0.0
+author = Giorgio Fracchiolla
+description = Automatically generates JUnit test skeletons from Java methods
+url = https://github.com/giofrac/testgen
+
+[features]
+- Parse Java method signatures
+- Generate JUnit 5 compatible test skeletons
+- CLI tool for batch generation
+- Intelligent parameter defaults
+- Package-aware test creation
+
+[requirements]
+java_version = 17+
+gradle_version = 8.5+
+junit_version = 5.10.0+
+
+[installation]
+1. Clone repository
+2. Run: ./gradlew build
+3. JAR available at: build/libs/IntelliJ_Platform_Plugin-1.0.0.jar
+
+[usage]
+CLI: ./testgen.sh <sourcefile> [--method name] [--output dir]
+Library: Use StandaloneTestGenerator class
+Plugin: (In development)
+
+[license]
+MIT
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+    <id>com.giofrac.testgen</id>
+    <name>Test Generator</name>
+    <vendor email="support@giofrac.com" url="https://github.com/giofrac/intellij-testgen">giofrac</vendor>
+
+    <description><![CDATA[
+        Automatically generates JUnit test skeletons from Java methods.
+        Right-click on a method to generate a working test class with placeholder assertions.
+    ]]></description>
+
+    <depends>com.intellij.modules.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+
+    <actions>
+        <action id="TestGenerator.GenerateTest"
+                class="com.giofrac.GenerateTestAction"
+                text="Generate JUnit Test"
+                description="Generate a JUnit test skeleton for the selected method">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
+

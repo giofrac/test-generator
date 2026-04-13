@@ -1,0 +1,1 @@
+rootProject.name = "IntelliJ_Platform_Plugin"
