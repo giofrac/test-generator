@@ -230,7 +230,7 @@ MIT License - See LICENSE file for details
 
 ## Author
 
-Giorgio Fracchiolla (@giofrac)
+Giorgio Fraccavento (@giofrac)
 
 ## Support
 
