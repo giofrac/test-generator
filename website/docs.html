@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Test Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-vial text-primary me-2"></i>
+                Test Generator
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="docs.html">Docs</a></li>
+                    <li class="nav-item"><a class="btn btn-primary ms-3" href="index.html#pricing">Get Started</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Documentation Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <nav class="docs-sidebar">
+                        <h5 class="fw-bold mb-3">Documentation</h5>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link active" href="#getting-started">Getting Started</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#cli-usage">CLI Usage</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#intellij-plugin">IntelliJ Plugin</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#advanced-features">Advanced Features</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#api-reference">API Reference</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#troubleshooting">Troubleshooting</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="docs-content">
+                        <!-- Getting Started -->
+                        <section id="getting-started">
+                            <h1 class="display-5 fw-bold mb-4">Getting Started</h1>
+
+                            <h3>Installation</h3>
+                            <p>Test Generator is available in multiple ways:</p>
+
+                            <h4>Option 1: Download JAR (Recommended)</h4>
+                            <div class="code-demo bg-light rounded p-3 mb-4">
+                                <pre class="mb-0"><code># Download the latest JAR from GitHub releases
+wget https://github.com/giofrac/test-generator/releases/download/v2.0.0/test-generator-2.0.0.jar
+
+# Or build from source
+git clone https://github.com/giofrac/test-generator.git
+cd test-generator
+./gradlew build</code></pre>
+                            </div>
+
+                            <h4>Option 2: Maven Dependency</h4>
+                            <div class="code-demo bg-light rounded p-3 mb-4">
+                                <pre class="mb-0"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.giofrac&lt;/groupId&gt;
+    &lt;artifactId&gt;test-generator&lt;/artifactId&gt;
+    &lt;version&gt;2.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                            </div>
+
+                            <h3>Quick Start</h3>
+                            <p>Generate your first test in 3 steps:</p>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="step-number mb-3">
+                                                <span class="badge bg-primary fs-4 p-3">1</span>
+                                            </div>
+                                            <h5>Create a Java class</h5>
+                                            <p class="text-muted">Write your business logic method</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="step-number mb-3">
+                                                <span class="badge bg-primary fs-4 p-3">2</span>
+                                            </div>
+                                            <h5>Run Test Generator</h5>
+                                            <p class="text-muted">Execute the CLI command</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="step-number mb-3">
+                                                <span class="badge bg-primary fs-4 p-3">3</span>
+                                            </div>
+                                            <h5>Get Complete Tests</h5>
+                                            <p class="text-muted">Ready-to-run test files</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- CLI Usage -->
+                        <section id="cli-usage" class="mt-5">
+                            <h2 class="display-6 fw-bold mb-4">CLI Usage</h2>
+
+                            <h4>Basic Usage</h4>
+                            <div class="code-demo bg-light rounded p-3 mb-4">
+                                <pre class="mb-0"><code># Generate tests for all methods in a class
+java -cp test-generator-2.0.0.jar com.giofrac.TestGeneratorCLI Calculator.java
+
+# Generate test for a specific method
+java -cp test-generator-2.0.0.jar com.giofrac.TestGeneratorCLI Calculator.java --method add
+
+# Specify output directory
+java -cp test-generator-2.0.0.jar com.giofrac.TestGeneratorCLI Calculator.java --output src/test/java</code></pre>
+                            </div>
+
+                            <h4>Advanced Options</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Option</th>
+                                            <th>Description</th>
+                                            <th>Example</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>--method &lt;name&gt;</code></td>
+                                            <td>Generate test for specific method</td>
+                                            <td><code>--method calculateSum</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>--output &lt;dir&gt;</code></td>
+                                            <td>Output directory for tests</td>
+                                            <td><code>--output target/test-gen</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>--framework &lt;type&gt;</code></td>
+                                            <td>Test framework (junit|testng)</td>
+                                            <td><code>--framework testng</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>--mockito</code></td>
+                                            <td>Generate tests with Mockito</td>
+                                            <td><code>--mockito</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>--parametrized</code></td>
+                                            <td>Generate parameterized tests</td>
+                                            <td><code>--parametrized</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- IntelliJ Plugin -->
+                        <section id="intellij-plugin" class="mt-5">
+                            <h2 class="display-6 fw-bold mb-4">IntelliJ IDEA Plugin</h2>
+
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Note:</strong> The IntelliJ plugin requires the IntelliJ Platform SDK and is available in Professional and Enterprise plans.
+                            </div>
+
+                            <h4>Installation</h4>
+                            <ol>
+                                <li>Download the plugin JAR from your account dashboard</li>
+                                <li>Open IntelliJ IDEA</li>
+                                <li>Go to <code>File → Settings → Plugins</code></li>
+                                <li>Click <code>Install Plugin from Disk</code></li>
+                                <li>Select the downloaded JAR file</li>
+                                <li>Restart IntelliJ IDEA</li>
+                            </ol>
+
+                            <h4>Usage</h4>
+                            <ol>
+                                <li>Open a Java file with your methods</li>
+                                <li>Place cursor on any public method</li>
+                                <li>Right-click and select <code>Test Generator → Generate Test</code></li>
+                                <li>The test file will be created automatically in the correct test directory</li>
+                            </ol>
+                        </section>
+
+                        <!-- Advanced Features -->
+                        <section id="advanced-features" class="mt-5">
+                            <h2 class="display-6 fw-bold mb-4">Advanced Features</h2>
+
+                            <h4>Mockito Integration</h4>
+                            <p>Generate tests with automatic dependency mocking:</p>
+                            <div class="code-demo bg-light rounded p-3 mb-4">
+                                <pre class="mb-0"><code>java -cp test-generator.jar com.giofrac.TestGeneratorCLI Service.java --mockito</code></pre>
+                            </div>
+
+                            <h4>Parameterized Tests</h4>
+                            <p>Create data-driven tests automatically:</p>
+                            <div class="code-demo bg-light rounded p-3 mb-4">
+                                <pre class="mb-0"><code>java -cp test-generator.jar com.giofrac.TestGeneratorCLI Utils.java --parametrized</code></pre>
+                            </div>
+
+                            <h4>TestNG Support</h4>
+                            <p>Use TestNG instead of JUnit:</p>
+                            <div class="code-demo bg-light rounded p-3 mb-4">
+                                <pre class="mb-0"><code>java -cp test-generator.jar com.giofrac.TestGeneratorCLI Calculator.java --framework testng</code></pre>
+                            </div>
+                        </section>
+
+                        <!-- API Reference -->
+                        <section id="api-reference" class="mt-5">
+                            <h2 class="display-6 fw-bold mb-4">API Reference</h2>
+
+                            <h4>StandaloneTestGenerator</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Method</th>
+                                            <th>Description</th>
+                                            <th>Parameters</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>generateTestForMethod()</code></td>
+                                            <td>Generate basic JUnit test</td>
+                                            <td>methodName, returnType, paramTypes, paramNames</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>generateTestWithMockito()</code></td>
+                                            <td>Generate test with Mockito</td>
+                                            <td>methodName, returnType, paramTypes, paramNames, mockableParams</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>generateParameterizedTest()</code></td>
+                                            <td>Generate parameterized test</td>
+                                            <td>methodName, returnType, paramTypes, paramNames</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>generateTestNGTest()</code></td>
+                                            <td>Generate TestNG test</td>
+                                            <td>methodName, returnType, paramTypes, paramNames</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Troubleshooting -->
+                        <section id="troubleshooting" class="mt-5">
+                            <h2 class="display-6 fw-bold mb-4">Troubleshooting</h2>
+
+                            <h4>Common Issues</h4>
+
+                            <div class="accordion" id="troubleshootingAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#issue1">
+                                            No methods found in file
+                                        </button>
+                                    </h2>
+                                    <div id="issue1" class="accordion-collapse collapse show" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            Ensure your methods are public and properly formatted. The tool only processes public methods.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue2">
+                                            IntelliJ plugin not working
+                                        </button>
+                                    </h2>
+                                    <div id="issue2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            Make sure you have the IntelliJ Platform SDK configured and the plugin is properly installed.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue3">
+                                            Generated tests don't compile
+                                        </button>
+                                    </h2>
+                                    <div id="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                        <div class="accordion-body">
+                                            Check that all required dependencies (JUnit, Mockito, etc.) are in your classpath.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
