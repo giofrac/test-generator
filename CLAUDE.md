@@ -105,3 +105,29 @@ public class ClassNameTest {
 - Multiple test framework support (TestNG, Spock)
 - Advanced assertion generation
 - Code coverage integration
+
+## Recent Improvements (v1.1.0)
+
+### ✅ Enhanced Test Generation
+- **Intelligent Assertions**: Type-specific assertions based on return types
+  - Numeric types: non-negative value checks
+  - Floating-point: NaN and infinite checks  
+  - Strings: non-empty checks
+  - Arrays: length validation
+- **Comprehensive Test Classes**: Single test class with all methods instead of separate files
+- **Better Method Parsing**: Improved regex patterns for generics and complex signatures
+
+### ✅ Extended Type Support
+- **Arrays**: `int[]`, `String[]`, etc. with proper initialization
+- **Collections**: `List<String>`, `Set<Integer>`, `Map<K,V>` with empty instances
+- **Wrapper Types**: `Integer`, `Boolean`, `Double`, etc.
+- **Common Classes**: `BigDecimal`, `BigInteger`, `LocalDate`, `UUID`, etc.
+
+### ✅ Exception Testing
+- New `generateTestForMethodWithException()` method for testing expected exceptions
+- Uses `assertThrows()` for proper exception validation
+
+### ✅ CLI Enhancements
+- Generates comprehensive test classes by default
+- Better output formatting and progress reporting
+- Maintains backward compatibility with `--method` option
