@@ -6,6 +6,5 @@ package com.giofrac;
 public class GenerateTestAction {
     // Placeholder class
     // In a full plugin environment, this would extend com.intellij.openapi.actionSystem.AnAction
+    // Implementation requires IntelliJ Platform SDK dependencies
 }
-
-
