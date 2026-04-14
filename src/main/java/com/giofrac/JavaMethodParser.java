@@ -21,9 +21,9 @@ public class JavaMethodParser {
     public List<TestGeneratorCLI.MethodInfo> extractMethods() {
         List<TestGeneratorCLI.MethodInfo> methods = new ArrayList<>();
 
-        // Pattern to match public methods
+        // Enhanced pattern to match public methods with better generic support
         Pattern methodPattern = Pattern.compile(
-            "public\\s+(?:static\\s+)?([\\w<>\\[\\],\\s]+?)\\s+([\\w]+)\\s*\\(([^)]*)\\)",
+            "public\\s+(?:static\\s+)?([\\w<>\\[\\],\\s.?]+?)\\s+([\\w]+)\\s*\\(([^)]*)\\)\\s*(?:throws\\s+[^\\{]+)?",
             Pattern.MULTILINE
         );
 
@@ -42,23 +42,13 @@ public class JavaMethodParser {
 
             foundMethods.add(methodName);
 
-            // Parse parameters
+            // Parse parameters with better handling
             String[] paramTypes = new String[0];
             String[] paramNames = new String[0];
 
             if (!parameters.isEmpty()) {
-                String[] params = parameters.split(",");
-                paramTypes = new String[params.length];
-                paramNames = new String[params.length];
-
-                for (int i = 0; i < params.length; i++) {
-                    String param = params[i].trim();
-                    String[] parts = param.split("\\s+");
-                    if (parts.length >= 2) {
-                        paramTypes[i] = parts[parts.length - 2]; // type is second to last
-                        paramNames[i] = parts[parts.length - 1];  // name is last
-                    }
-                }
+                paramTypes = parseParameterTypes(parameters);
+                paramNames = parseParameterNames(parameters);
             }
 
             methods.add(new TestGeneratorCLI.MethodInfo(methodName, returnType, paramTypes, paramNames));
@@ -67,10 +57,82 @@ public class JavaMethodParser {
         return methods;
     }
 
+    private String[] parseParameterTypes(String parameters) {
+        List<String> types = new ArrayList<>();
+        int depth = 0;
+        StringBuilder currentType = new StringBuilder();
+
+        for (int i = 0; i < parameters.length(); i++) {
+            char c = parameters.charAt(i);
+
+            if (c == '<') {
+                depth++;
+                currentType.append(c);
+            } else if (c == '>') {
+                depth--;
+                currentType.append(c);
+            } else if (c == ',' && depth == 0) {
+                // End of parameter
+                String type = extractTypeFromParam(currentType.toString().trim());
+                if (!type.isEmpty()) {
+                    types.add(type);
+                }
+                currentType.setLength(0);
+            } else {
+                currentType.append(c);
+            }
+        }
+
+        // Add the last parameter
+        String type = extractTypeFromParam(currentType.toString().trim());
+        if (!type.isEmpty()) {
+            types.add(type);
+        }
+
+        return types.toArray(new String[0]);
+    }
+
+    private String[] parseParameterNames(String parameters) {
+        List<String> names = new ArrayList<>();
+        String[] params = parameters.split(",");
+
+        for (String param : params) {
+            param = param.trim();
+            if (!param.isEmpty()) {
+                String[] parts = param.split("\\s+");
+                if (parts.length > 0) {
+                    // Name is the last part, remove any trailing characters like commas
+                    String name = parts[parts.length - 1].replaceAll("[^\\w]", "");
+                    if (!name.isEmpty()) {
+                        names.add(name);
+                    }
+                }
+            }
+        }
+
+        return names.toArray(new String[0]);
+    }
+
+    private String extractTypeFromParam(String param) {
+        if (param.isEmpty()) return "";
+
+        // Remove parameter name (last word) and extra spaces
+        String[] parts = param.split("\\s+");
+        if (parts.length <= 1) return param.trim();
+
+        // Rebuild type without the name
+        StringBuilder type = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            if (i > 0) type.append(" ");
+            type.append(parts[i]);
+        }
+
+        return type.toString().trim();
+    }
+
     private String getClassName() {
         Pattern classPattern = Pattern.compile("public\\s+class\\s+(\\w+)");
         Matcher matcher = classPattern.matcher(sourceCode);
         return matcher.find() ? matcher.group(1) : "";
     }
 }
-

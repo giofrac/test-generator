@@ -69,10 +69,8 @@ public class TestGeneratorCLI {
 
                 generateTest(generator, method, outputDir);
             } else {
-                // Generate for all non-private methods
-                for (MethodInfo method : methods) {
-                    generateTest(generator, method, outputDir);
-                }
+                // Generate a single test class with all methods
+                generateAllTests(generator, methods, outputDir);
             }
 
         } catch (Exception e) {
@@ -92,6 +90,84 @@ public class TestGeneratorCLI {
 
         generator.writeTestFile(testCode, outputDir);
         System.out.println("✓ Generated test for method: " + method.name);
+    }
+
+    private static void generateAllTests(StandaloneTestGenerator generator, List<MethodInfo> methods, String outputDir) throws IOException {
+        StringBuilder testClassCode = new StringBuilder();
+
+        // Package
+        testClassCode.append("package generated;\n\n");
+
+        // Imports
+        testClassCode.append("import org.junit.jupiter.api.Test;\n");
+        testClassCode.append("import static org.junit.jupiter.api.Assertions.*;\n\n");
+
+        // Class declaration
+        testClassCode.append("public class ").append(generator.getTestClassName()).append(" {\n\n");
+
+        for (MethodInfo method : methods) {
+            // Test method
+            String testMethodName = "test" + capitalize(method.name);
+            testClassCode.append("    @Test\n");
+            testClassCode.append("    void ").append(testMethodName).append("() {\n");
+
+            // Create instance
+            testClassCode.append("        ").append(generator.getClassName()).append(" instance = new ")
+                        .append(generator.getClassName()).append("();\n");
+
+            // Generate method call and assertions
+            generateTestMethodBody(testClassCode, method, generator);
+
+            testClassCode.append("    }\n\n");
+        }
+
+        testClassCode.append("}\n");
+
+        generator.writeTestFile(testClassCode.toString(), outputDir);
+        System.out.println("✓ Generated comprehensive test class with " + methods.size() + " test methods");
+    }
+
+    private static void generateTestMethodBody(StringBuilder sb, MethodInfo method, StandaloneTestGenerator generator) {
+        // Call method with parameters
+        if (!"void".equals(method.returnType)) {
+            sb.append("        ").append(method.returnType).append(" result = instance.").append(method.name).append("(");
+        } else {
+            sb.append("        instance.").append(method.name).append("(");
+        }
+
+        // Add parameters
+        for (int i = 0; i < method.paramTypes.length; i++) {
+            if (i > 0) sb.append(", ");
+            sb.append(generator.getDefaultValue(method.paramTypes[i]));
+        }
+        sb.append(");\n");
+
+        // Generate assertions
+        if (!"void".equals(method.returnType)) {
+            sb.append("        assertNotNull(result);\n");
+
+            // Type-specific assertions
+            String trimmedType = method.returnType.trim();
+            switch (trimmedType) {
+                case "int", "long", "short", "byte" -> {
+                    sb.append("        assertTrue(result >= 0, \"Result should be non-negative\");\n");
+                }
+                case "double", "float" -> {
+                    sb.append("        assertFalse(Double.isNaN(result), \"Result should not be NaN\");\n");
+                    sb.append("        assertFalse(Double.isInfinite(result), \"Result should not be infinite\");\n");
+                }
+                case "String" -> {
+                    sb.append("        assertFalse(result.isEmpty(), \"Result should not be empty\");\n");
+                }
+                default -> {
+                    if (trimmedType.contains("[]")) {
+                        sb.append("        assertTrue(result.length >= 0, \"Array should have non-negative length\");\n");
+                    }
+                }
+            }
+        } else {
+            sb.append("        // Method executed without throwing exceptions\n");
+        }
     }
 
     private static String extractMethodName(String[] args) {
@@ -129,6 +205,13 @@ public class TestGeneratorCLI {
         System.out.println("  java com.giofrac.TestGeneratorCLI Calculator.java --output target/test");
     }
 
+    private static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
     static class MethodInfo {
         String name;
         String returnType;
@@ -143,4 +226,3 @@ public class TestGeneratorCLI {
         }
     }
 }
-
